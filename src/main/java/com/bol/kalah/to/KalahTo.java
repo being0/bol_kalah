@@ -1,5 +1,6 @@
 package com.bol.kalah.to;
 
+import com.bol.kalah.service.model.Kalah;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Data transfer object for kalah game
  *
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 12/12/2020
+ * @version 1, 04/16/2022
  */
 @Data
 @AllArgsConstructor
@@ -24,5 +25,7 @@ public class KalahTo {
      * 9":"4","10":"4","11":"4","12":"4","13":"4","14":"0"}
      */
     private Map<String, String> status;
+
+    private Kalah.PlayerTurn turn;
 
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Clock;
 
 /**
+ * Use UTC as timezone
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
  * @version 1, 04/01/2022
  */

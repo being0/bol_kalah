@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 
 /**
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 12/12/2020
+ * @version 1, 04/16/2022
  */
 @Component
 public class KalahGameMapper implements BaseDtoDomainMapper<KalahTo, Kalah> {
@@ -22,6 +22,6 @@ public class KalahGameMapper implements BaseDtoDomainMapper<KalahTo, Kalah> {
         for (int i = 0; i < kalah.getBoard().length; i++)
             linkedMap.put(String.valueOf(i + 1), String.valueOf(kalah.getBoard()[i]));
 
-        return new KalahTo(kalah.getId(), linkedMap);
+        return new KalahTo(kalah.getId(), linkedMap, kalah.getTurn());
     }
 }

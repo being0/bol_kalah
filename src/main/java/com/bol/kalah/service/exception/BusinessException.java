@@ -2,7 +2,7 @@ package com.bol.kalah.service.exception;
 
 /**
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 04/15/2022
+ * @version 1, 04/16/2022
  */
 public abstract class BusinessException extends RuntimeException {
 

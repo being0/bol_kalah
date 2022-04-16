@@ -4,7 +4,7 @@ import static com.bol.kalah.service.exception.BusinessErrorsEnum.INVALID_MOVE;
 
 /**
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 04/15/2022
+ * @version 1, 04/16/2022
  */
 public class InvalidMoveException extends BusinessException{
 

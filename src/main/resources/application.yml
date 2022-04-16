@@ -7,6 +7,13 @@ spring:
       database: ${db.name:kalahdb}
       authentication-database: admin
 
+  jackson:
+    default-property-inclusion: NON_NULL
+    property-naming-strategy: SNAKE_CASE
+    serialization.INDENT_OUTPUT: false
+    serialization:
+      write-dates-as-timestamps: true
+
 my:
   kalah:
     noOfPits: 6

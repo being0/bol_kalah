@@ -4,7 +4,7 @@ import static com.bol.kalah.service.exception.BusinessErrorsEnum.GAME_NOT_FOUND;
 
 /**
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 12/12/2020
+ * @version 1, 04/16/2022
  */
 public class KalahNotFoundException extends BusinessException {
 

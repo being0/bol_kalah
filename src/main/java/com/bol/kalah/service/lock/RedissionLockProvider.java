@@ -12,7 +12,7 @@ import java.util.function.Function;
  * Provides distributed lock using Redis and Redisson client
  *
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
- * @version 1, 12/12/2020
+ * @version 1, 04/16/2022
  */
 @Component
 public class RedissionLockProvider implements LockProvider {
