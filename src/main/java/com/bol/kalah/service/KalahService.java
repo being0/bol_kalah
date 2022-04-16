@@ -42,6 +42,6 @@ public interface KalahService {
      * @param gameId game id
      * @return Kalah game
      */
-    KalahTo get(@NotNull @Size(min = 1, max = 40) String gameId);
+    KalahTo get(@NotNull @Size(min = 1, max = 40) String gameId) throws KalahNotFoundException;
 
 }

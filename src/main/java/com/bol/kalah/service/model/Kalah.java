@@ -63,7 +63,7 @@ public class Kalah {
     }
 
     public Kalah(String id, GameState state, LocalDateTime created, LocalDateTime modified,
-                 Integer noOfStones, Integer noOfPits, PlayerTurn turn, int[] board) {
+                 Integer noOfPits, Integer noOfStones, PlayerTurn turn, int[] board) {
         this.id = id;
         this.state = state;
         this.created = created;

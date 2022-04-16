@@ -61,7 +61,7 @@ public class KalahController {
      * @return Kalah game
      */
     @GetMapping("/{gameId}")
-    public KalahTo get(@PathVariable("gameId") String gameId) {
+    public KalahTo get(@PathVariable("gameId") String gameId) throws KalahNotFoundException {
 
         return kalahService.get(gameId);
     }
