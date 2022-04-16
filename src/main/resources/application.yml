@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      database: ${db.name:kalahdb}
+      authentication-database: admin
+
+my:
+  kalah:
+    noOfPits: 6
+    noOfStones: 6
+
+management:
+  server:
+    port: 8071
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info

@@ -1,0 +1,15 @@
+version: '3.6'
+
+services:
+  mongo:
+    image: mongo:4.4.3
+    container_name: kalah_mongo
+    environment:
+      - MONGO_INITDB_DATABASE=kalahdb
+    ports:
+    - "27017-27019:27017-27019"
+  redis:
+    image: redis:alpine
+    container_name: kalah_redis
+    ports:
+      - "6379:6379"
