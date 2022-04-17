@@ -53,6 +53,6 @@ sonarqube {
         property "sonar.projectKey", "being0_bol_kalah"
         property "sonar.organization", "being0"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.groovy.binaries", "${project.buildDir.name}${File.separator}classes${File.separator}groovy"
+        property "sonar.groovy.binaries", "${project.buildDir.name}${File.separator}classes${File.separator}groovy${File.separator}test"
     }
 }
