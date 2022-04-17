@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER1;
-import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER2;
 import static com.bol.kalah.service.model.Kalah.GameState.FINISHED;
 import static com.bol.kalah.service.model.Kalah.GameState.RUNNING;
+import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER1;
+import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER2;
 
 /**
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>

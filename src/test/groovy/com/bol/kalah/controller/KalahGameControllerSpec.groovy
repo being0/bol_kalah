@@ -6,22 +6,15 @@ import com.bol.kalah.service.exception.InvalidMoveException
 import com.bol.kalah.service.exception.KalahFinishedException
 import com.bol.kalah.service.exception.KalahNotFoundException
 import com.bol.kalah.to.KalahTo
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
-import static com.bol.kalah.service.exception.BusinessErrorsEnum.GAME_FINISHED
-import static com.bol.kalah.service.exception.BusinessErrorsEnum.GAME_NOT_FOUND
-import static com.bol.kalah.service.exception.BusinessErrorsEnum.INVALID_MOVE
+import static com.bol.kalah.service.exception.BusinessErrorsEnum.*
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER1
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER2
 import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class KalahGameControllerSpec extends Specification {
