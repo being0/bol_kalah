@@ -47,10 +47,3 @@ jacocoTestReport {
         xml.enabled true
     }
 }
-sonarqube {
-    properties {
-        property 'sonar.host.url', 'https://sonarcloud.io/'
-        property 'sonar.organization', 'being0'
-        property 'sonar.projectKey', 'being0_bol_kalah'
-    }
-}

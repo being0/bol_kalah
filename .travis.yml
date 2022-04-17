@@ -1,9 +1,0 @@
-dist: trusty
-language: java
-
-addons:
-  sonarcloud:
-    organization: "being0"
-
-script:
-  - gradle test jacocoTestReport sonarqube -Dsonar.projectKey=kalah-api
