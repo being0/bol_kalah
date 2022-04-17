@@ -5,14 +5,18 @@ import com.bol.kalah.service.KalahService
 import com.bol.kalah.service.exception.InvalidMoveException
 import com.bol.kalah.service.exception.KalahFinishedException
 import com.bol.kalah.service.exception.KalahNotFoundException
+import com.bol.kalah.service.exception.ValidationException
 import com.bol.kalah.to.KalahTo
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
+import javax.validation.ConstraintViolationException
+
 import static com.bol.kalah.service.exception.BusinessErrorsEnum.*
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER1
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER2
+import static java.util.Collections.emptySet
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -65,7 +69,7 @@ class KalahGameControllerSpec extends Specification {
                 .andExpect(jsonPath("errorCode").value(GAME_NOT_FOUND.name()))
     }
 
-    def '"PUT /games/{gameId}/pits/{pitId}" when InvalidMoveException then expect 400'() {
+    def '"PUT /games/{gameId}/pits/{pitId}" when InvalidMoveException then expect 409'() {
         given:
         kalahService.move("xyz", 1) >> {
             throw new InvalidMoveException("Invalid move!")
@@ -75,9 +79,37 @@ class KalahGameControllerSpec extends Specification {
         def response = mockMvc.perform(put("/games/{gameId}/pits/{pitId}", "xyz", 1))
 
         then:
-        response.andExpect(status().isBadRequest())
+        response.andExpect(status().isConflict())
                 .andExpect(jsonPath("message").value("Invalid move!"))
                 .andExpect(jsonPath("errorCode").value(INVALID_MOVE.name()))
+    }
+
+    def '"PUT /games/{gameId}/pits/{pitId}" when ValidationException then expect 400'() {
+        given:
+        kalahService.move("xyz", 1) >> {
+            throw new ValidationException("Invalid inputs!")
+        }
+
+        when:
+        def response = mockMvc.perform(put("/games/{gameId}/pits/{pitId}", "xyz", 1))
+
+        then:
+        response.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Invalid inputs!"))
+                .andExpect(jsonPath("errorCode").value(VALIDATION.name()))
+    }
+
+    def '"PUT /games/{gameId}/pits/{pitId}" when ConstraintViolationException then expect 400'() {
+        given:
+        kalahService.move("xyz", 1) >> {
+            throw new ConstraintViolationException(emptySet())
+        }
+
+        when:
+        def response = mockMvc.perform(put("/games/{gameId}/pits/{pitId}", "xyz", 1))
+
+        then:
+        response.andExpect(status().isBadRequest())
     }
 
     def '"PUT /games/{gameId}/pits/{pitId}" when KalahFinishedException then expect 409'() {
@@ -147,6 +179,5 @@ class KalahGameControllerSpec extends Specification {
                 .andExpect(jsonPath("message").value("Game not found!"))
                 .andExpect(jsonPath("errorCode").value(GAME_NOT_FOUND.name()))
     }
-
 
 }

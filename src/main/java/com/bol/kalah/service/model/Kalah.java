@@ -1,5 +1,6 @@
 package com.bol.kalah.service.model;
 
+import com.bol.kalah.service.exception.ValidationException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -86,7 +87,7 @@ public class Kalah {
      * @return Kalah model
      */
     public static Kalah doCreate(String id, int noOfPits, int noOfStones, LocalDateTime now) {
-        if (noOfPits < 1 || noOfStones < 1) throw new IllegalArgumentException("Use positive noOfPits and noOfStones.");
+        if (noOfPits < 1 || noOfStones < 1) throw new ValidationException("Use positive noOfPits and noOfStones.");
 
         // Setup board with pits equal to numberOfStones and Kalahs with 0, no of pits will noOfPits * 2 + 2 kalahs
         int[] board = new int[noOfPits * 2 + 2];
@@ -102,7 +103,7 @@ public class Kalah {
      * Game status could be created, running or finished
      */
     public enum GameState {
-        CREATED, RUNNING, FINISHED;
+        CREATED, RUNNING, FINISHED
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.bol.kalah.service.model
 
+import com.bol.kalah.service.exception.ValidationException
 import com.bol.kalah.service.model.Kalah
 import spock.lang.Specification
 
@@ -23,7 +24,7 @@ class KalahSpec extends Specification {
     def '"doCreate" should prepare Kalah object for creation'() {
 
         when:
-        Kalah kalahGame = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, LocalDateTime.now(clock));
+        Kalah kalahGame = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, LocalDateTime.now(clock))
 
         then:
         kalahGame.getId() == "9529bb11-563c-47cf-b79a-912174f94d6d"
@@ -34,6 +35,22 @@ class KalahSpec extends Specification {
         kalahGame.getNoOfPits() == 6
         kalahGame.getNoOfStones() == 4
         kalahGame.getBoard() == [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0] as int[]
+    }
+
+    def '"doCreate" with invalid noOfPits throw ValidationException'() {
+        when:
+        Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 0, 4, LocalDateTime.now(clock))
+
+        then:
+        thrown(ValidationException)
+    }
+
+    def '"doCreate" with invalid noOfStones throw ValidationException'() {
+        when:
+        Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 0, LocalDateTime.now(clock))
+
+        then:
+        thrown(ValidationException)
     }
 
 

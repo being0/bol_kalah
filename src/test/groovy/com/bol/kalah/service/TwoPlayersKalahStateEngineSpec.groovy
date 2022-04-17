@@ -2,6 +2,7 @@ package com.bol.kalah.service
 
 import com.bol.kalah.service.exception.InvalidMoveException
 import com.bol.kalah.service.exception.KalahFinishedException
+import com.bol.kalah.service.exception.ValidationException
 import com.bol.kalah.service.model.Kalah
 import spock.lang.Specification
 
@@ -45,7 +46,25 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
         thrown(KalahFinishedException)
     }
 
-    def '"move" invalid pit ids then throw InvalidMoveException'() {
+    def '"move" throw InvalidMoveException when it is Kalah index'() {
+
+        given:
+        Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 6, now)
+
+        when:
+        kalahEngine.move(kalah, kalahIndex as int)
+
+        then:
+        thrown(InvalidMoveException)
+
+        where:
+        kalahIndex << [
+                7,  // Kalah
+                14 // Kalah
+        ]
+    }
+
+    def '"move" throw ValidationException when pitId is not valid'() {
 
         given:
         Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 6, now)
@@ -54,12 +73,10 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
         kalahEngine.move(kalah, invalidKalahId as int)
 
         then:
-        thrown(InvalidMoveException)
+        thrown(ValidationException)
 
         where:
         invalidKalahId << [
-                7,  // Kalah
-                14, // Kalah
                 0,  // zero
                 -1, // minus
                 15 // more than size of board

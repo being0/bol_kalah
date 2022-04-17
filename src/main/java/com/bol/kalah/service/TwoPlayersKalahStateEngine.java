@@ -2,6 +2,7 @@ package com.bol.kalah.service;
 
 import com.bol.kalah.service.exception.InvalidMoveException;
 import com.bol.kalah.service.exception.KalahFinishedException;
+import com.bol.kalah.service.exception.ValidationException;
 import com.bol.kalah.service.model.Kalah;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -142,8 +143,8 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
 
     private void validateMove(Kalah kalah, int pitId) throws InvalidMoveException {
         // Validate pitId
-        if (pitId < 0 || pitId >= kalah.getKalah2Index())
-            throw new InvalidMoveException("Pit Id should be a positive number under " + kalah.getKalah2Index());
+        if (pitId < 0 || pitId > kalah.getKalah2Index())
+            throw new ValidationException("Pit Id should be a positive number under " + kalah.getKalah2Index());
 
         if (pitId == kalah.getKalah1Index() || pitId == kalah.getKalah2Index())
             throw new InvalidMoveException("Stones in kalah can not be moved.");
