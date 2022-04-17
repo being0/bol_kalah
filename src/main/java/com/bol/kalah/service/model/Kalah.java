@@ -63,12 +63,12 @@ public class Kalah {
         return noOfPits * 2 + 1;
     }
 
-    public Kalah(String id, GameState state, LocalDateTime created, LocalDateTime modified,
+    public Kalah(String id, GameState state, LocalDateTime created,
                  Integer noOfPits, Integer noOfStones, PlayerTurn turn, int[] board) {
         this.id = id;
         this.state = state;
         this.created = created;
-        this.modified = modified;
+        this.modified = created;
         this.noOfStones = noOfStones;
         this.noOfPits = noOfPits;
         this.turn = turn;
@@ -95,7 +95,7 @@ public class Kalah {
         board[kalah1Index(noOfPits)] = 0;
         board[kalah2Index(noOfPits)] = 0;
 
-        return new Kalah(id, GameState.CREATED, now, now, noOfPits, noOfStones, null, board);
+        return new Kalah(id, GameState.CREATED, now, noOfPits, noOfStones, null, board);
     }
 
 

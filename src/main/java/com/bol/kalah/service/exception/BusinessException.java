@@ -8,7 +8,7 @@ public abstract class BusinessException extends RuntimeException {
 
     private final BusinessErrorsEnum businessErrorsEnum;
 
-    public BusinessException(String message, BusinessErrorsEnum businessErrorsEnum) {
+    protected BusinessException(String message, BusinessErrorsEnum businessErrorsEnum) {
         super(message);
         this.businessErrorsEnum = businessErrorsEnum;
     }

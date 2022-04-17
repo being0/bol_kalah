@@ -2,7 +2,7 @@ package com.bol.kalah.service.lock;
 
 import com.bol.kalah.service.model.Kalah;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Provides lock and doInLock does the function in a locked and synchronized block
@@ -19,5 +19,5 @@ public interface LockProvider {
      * @param kalahGameFunc function that should be done in lock
      * @return kalah game
      */
-    Kalah doInLock(Kalah kalahGame, Function<Kalah, Kalah> kalahGameFunc);
+    Kalah doInLock(Kalah kalahGame, UnaryOperator<Kalah> kalahGameFunc);
 }

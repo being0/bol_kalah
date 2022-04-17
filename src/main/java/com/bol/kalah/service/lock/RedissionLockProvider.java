@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.concurrent.locks.Lock;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Provides distributed lock using Redis and Redisson client
@@ -29,7 +29,7 @@ public class RedissionLockProvider implements LockProvider {
      * @return Kalah game
      */
     @Override
-    public Kalah doInLock(Kalah kalahGame, Function<Kalah, Kalah> kalahGameFunc) {
+    public Kalah doInLock(Kalah kalahGame, UnaryOperator<Kalah> kalahGameFunc) {
 
         // Do the action in fair lock so the order is preserved
         Lock lock = redissonClient.getFairLock("kalah_game_" + kalahGame.getId());
