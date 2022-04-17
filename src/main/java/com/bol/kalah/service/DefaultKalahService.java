@@ -59,7 +59,7 @@ public class DefaultKalahService implements KalahService {
         Kalah kalah = loadKalah(gameId);
 
         // Do the movement in a distributed lock, concurrency on the same game can produce inconsistent states
-        Kalah movedGame = lockProvider.doInLock(kalah, (kg) -> {
+        Kalah movedGame = lockProvider.doInLock(kalah, kg -> {
             // Move the Kalah game
             Kalah movedKalah = kalahStateEngine.move(kalah, pitId);
             // Save on repository
