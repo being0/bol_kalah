@@ -42,15 +42,10 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         kalah.initKalahIndexes();
         int[] board = kalah.getBoard();
 
+        if (kalah.getTurn() == null) kalah.setTurn(pitId < kalah.getKalah1Index() ? PLAYER1 : PLAYER2);
+
         // Validate move
         validateMove(kalah, pitId);
-
-        if (kalah.getTurn() == null) {
-            kalah.setTurn(pitId < kalah.getKalah1Index() ? PLAYER1 : PLAYER2);
-        } else if (!kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits())) {
-            // It is not this player turn
-            throw new InvalidMoveException("It is not your turn. Wait for your opponent to move.");
-        }
 
         // All checks passed, so move should be applied
         kalah.setState(RUNNING);
@@ -59,33 +54,33 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         board[pitId] = 0; // Make this pit empty
         Kalah.PlayerTurn turn = kalah.getTurn();
         int kalahIndex = turn == PLAYER1 ? kalah.getKalah1Index() : kalah.getKalah2Index();
-        while (stones > 0) {
-            currentPitId = getNextPitId(kalah, currentPitId);
 
+        // Put stones in pits
+        for (; stones > 0; stones--) {
+            currentPitId = getNextPitId(kalah, currentPitId);
             // Add to stones of next pitId
             board[currentPitId]++;
-
-            stones--;
-
-            if (stones == 0) {
-                // The last stone
-                if (currentPitId != kalahIndex) {
-                    if (board[currentPitId] == 1 && kalah.getTurn().isOnMySide(currentPitId, kalah.getNoOfPits())) {
-                        // The pit was empty and it is last stone and is on player side
-                        applyEmptyPitFilled(kalah, currentPitId, kalahIndex);
-                    }
-
-                    // Change the turn if the stone doesn't land on the player Kalah
-                    kalah.setTurn(kalah.getTurn().getOpponentSide());
-                }
-
-                checkGameOver(kalah, turn);
-            }
         }
+
+        checkLastStoneRule(kalah, board, currentPitId, kalahIndex);
+        checkGameOver(kalah, turn);
 
         kalah.setModified(LocalDateTime.now(clock));
 
         return kalah;
+    }
+
+    private void checkLastStoneRule(Kalah kalah, int[] board, int currentPitId, int kalahIndex) {
+        // The last stone
+        if (currentPitId != kalahIndex) {
+            if (board[currentPitId] == 1 && kalah.getTurn().isOnMySide(currentPitId, kalah.getNoOfPits())) {
+                // The pit was empty and it is last stone and is on player side
+                applyEmptyPitFilled(kalah, currentPitId, kalahIndex);
+            }
+
+            // Change the turn if the stone doesn't land on the player Kalah
+            kalah.setTurn(kalah.getTurn().getOpponentSide());
+        }
     }
 
     private void checkGameOver(Kalah kalah, Kalah.PlayerTurn turn) {
@@ -151,6 +146,11 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
 
         // Pit should not be empty
         if (kalah.getBoard()[pitId] == 0) throw new InvalidMoveException("The pit is empty!");
+
+        if (!kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits())) {
+            // It is not this player turn
+            throw new InvalidMoveException("It is not your turn. Wait for your opponent to move.");
+        }
     }
 
 }

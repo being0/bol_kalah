@@ -42,7 +42,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ErrorTo("An unexpected error occurred!"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private String constraintViolationToString(ConstraintViolation cv) {
+    private String constraintViolationToString(ConstraintViolation<?> cv) {
         return cv == null ? "null" : getLastPath(cv.getPropertyPath()) + ": " + cv.getMessage();
     }
 
