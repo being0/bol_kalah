@@ -50,15 +50,14 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         // All checks passed, so move should be applied
         kalah.setState(RUNNING);
         int currentPitId = pitId;
-        int stones = board[pitId];
         board[pitId] = 0; // Make this pit empty
         Kalah.PlayerTurn turn = kalah.getTurn();
         int kalahIndex = turn == PLAYER1 ? kalah.getKalah1Index() : kalah.getKalah2Index();
 
         // Put stones in pits
-        for (; stones > 0; stones--) {
+        for (int stones = board[pitId]; stones > 0; stones--) {
             currentPitId = getNextPitId(kalah, currentPitId);
-            // Add to stones of next pitId
+            // Add to the stones of next pitId
             board[currentPitId]++;
         }
 
