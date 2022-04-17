@@ -14,7 +14,7 @@ class KalahGameMapperSpec extends Specification {
         KalahGameMapper kalahGameMapper = new KalahGameMapper()
 
         when:
-        KalahTo kalahTo = kalahGameMapper.mapToDto(null);
+        KalahTo kalahTo = kalahGameMapper.mapToDto(null)
 
         then:
         kalahTo == null
@@ -30,7 +30,7 @@ class KalahGameMapperSpec extends Specification {
         kalah.turn = PLAYER2
 
         when:
-        KalahTo kalahTo = kalahGameMapper.mapToDto(kalah);
+        KalahTo kalahTo = kalahGameMapper.mapToDto(kalah)
 
         then:
         kalahTo.getStatus().size() == board.size()

@@ -76,7 +76,7 @@ class DefaultKalahGameServiceSpec extends Specification {
 
         given:
         kalahRepository.findById(_) >> Optional.of(new Kalah())
-        Kalah movedKalah = new Kalah();
+        Kalah movedKalah = new Kalah()
         movedKalah.board = [7, 7, 7, 6, 6, 6, 0, 6, 6, 6, 0, 7, 7, 1]
         movedKalah.id = testId
         movedKalah.turn = PLAYER1
@@ -105,7 +105,7 @@ class DefaultKalahGameServiceSpec extends Specification {
 
     def '"get" returns kalah'() {
         given:
-        Kalah kalah = new Kalah();
+        Kalah kalah = new Kalah()
         kalah.board = [7, 7, 7, 6, 6, 6, 0, 6, 6, 6, 0, 7, 7, 1]
         kalah.id = testId
         kalah.turn = PLAYER2

@@ -48,12 +48,12 @@ jacocoTestReport {
     }
 }
 
+// Unfortunately it seems sonarcloud doesn't support groovy
 sonarqube {
     properties {
         property "sonar.projectKey", "being0_bol_kalah"
         property "sonar.organization", "being0"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.tests", "src/test/groovy"
-        property "sonar.language", "grvy"
     }
 }

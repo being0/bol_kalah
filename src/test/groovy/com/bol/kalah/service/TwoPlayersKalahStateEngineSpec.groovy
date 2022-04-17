@@ -169,6 +169,21 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
         kalah.state == FINISHED
     }
 
+    def '"move" Jump over opponent Kalah'() {
+
+        given:
+        Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, now)
+        kalah.state = RUNNING
+        kalah.turn = PLAYER1
+        kalah.board = [3, 2, 6, 1, 2, 8, 18, 4, 3, 4, 7, 3, 1, 9] as int[]
+
+        when:
+        Kalah movedKalah = kalahEngine.move(kalah, 6)
+
+        then:
+        movedKalah.board == [4, 2, 6, 1, 2, 0, 19, 5, 4, 5, 8, 4, 2, 9] as int[]
+    }
+
     def '"move" Move last into kalah keep the turn as it is'() {
 
         given:
