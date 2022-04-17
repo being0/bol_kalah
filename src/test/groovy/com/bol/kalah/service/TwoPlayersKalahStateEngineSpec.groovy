@@ -1,6 +1,5 @@
 package com.bol.kalah.service
 
-import com.bol.kalah.service.TwoPlayersKalahStateEngine
 import com.bol.kalah.service.exception.InvalidMoveException
 import com.bol.kalah.service.exception.KalahFinishedException
 import com.bol.kalah.service.model.Kalah
@@ -35,7 +34,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
     def '"move" when state is FINISHED raise KalahFinishedException'() {
 
         given:
-        Kalah kalah = Kalah.doCreate("2323", 6, 4, now);
+        Kalah kalah = Kalah.doCreate("2323", 6, 4, now)
         kalah.setState(FINISHED)
         kalah.board = [0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 32] as int[]
 
@@ -49,7 +48,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
     def '"move" invalid pit ids then throw InvalidMoveException'() {
 
         given:
-        Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 6, now);
+        Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 6, now)
 
         when:
         kalahEngine.move(kalah, invalidKalahId as int)
@@ -81,7 +80,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
     }
 
 
-    def '"doMove" If not player turn then throw InvalidMoveException'() {
+    def '"move" If not player turn then throw InvalidMoveException'() {
 
         given:
         Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, now)
@@ -153,7 +152,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
         kalah.state == FINISHED
     }
 
-    def '"doMove" Move last into kalah keep the turn as it is'() {
+    def '"move" Move last into kalah keep the turn as it is'() {
 
         given:
         Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, now)

@@ -45,7 +45,7 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         validateMove(kalah, pitId);
 
         if (kalah.getTurn() == null) {
-            kalah.setTurn(actionSide(kalah, pitId));
+            kalah.setTurn(pitId < kalah.getKalah1Index() ? PLAYER1 : PLAYER2);
         } else if (!kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits())) {
             // It is not this player turn
             throw new InvalidMoveException("It is not your turn. Wait for your opponent to move.");
@@ -150,18 +150,6 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
 
         // Pit should not be empty
         if (kalah.getBoard()[pitId] == 0) throw new InvalidMoveException("The pit is empty!");
-    }
-
-    /**
-     * Which side tries to move its pit, if pitId is under 7 then it is PLAYER1, else it is PLAYER2
-     *
-     * @param kalah Kalah game
-     * @param pitId Pit id
-     * @return Board side that is trying to the action
-     */
-    private Kalah.PlayerTurn actionSide(Kalah kalah, Integer pitId) {
-
-        return pitId < kalah.getKalah1Index() ? PLAYER1 : PLAYER2;
     }
 
 }
