@@ -62,7 +62,7 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
             board[currentPitId]++;
         }
 
-        checkLastStoneRule(kalah, board, currentPitId, kalahIndex);
+        applyLastStoneRule(kalah, board, currentPitId, kalahIndex);
         checkGameOver(kalah, turn);
 
         kalah.setModified(LocalDateTime.now(clock));
@@ -70,7 +70,7 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         return kalah;
     }
 
-    private void checkLastStoneRule(Kalah kalah, int[] board, int currentPitId, int kalahIndex) {
+    private void applyLastStoneRule(Kalah kalah, int[] board, int currentPitId, int kalahIndex) {
         // The last stone
         if (currentPitId != kalahIndex) {
             if (board[currentPitId] == 1 && kalah.getTurn().isOnMySide(currentPitId, kalah.getNoOfPits())) {
