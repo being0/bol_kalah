@@ -55,13 +55,14 @@ public class DefaultKalahService implements KalahService {
 
         // Find the game by id
         Kalah kalah = loadKalah(gameId);
+        log.debug("Kalah before move {}", kalah);
 
         // Move the Kalah game
         Kalah movedKalah = kalahStateEngine.move(kalah, pitId);
+
         // Save on repository(Use Optimistic Locking to make sure the concurrent calls(like double submit) don't corrupt the game state), see Kalah.version
         Kalah movedSavedKalah = kalahRepository.save(movedKalah);
-
-        log.debug("Kalah {} moved for pitId {} final kalah is {}", gameId, pitId, kalah);
+        log.debug("Kalah {} moved for pitId {} final kalah is {}", gameId, pitId, movedSavedKalah);
 
         return kalahGameMapper.mapToDto(movedSavedKalah);
     }
@@ -69,7 +70,12 @@ public class DefaultKalahService implements KalahService {
     @Override
     public KalahTo get(String gameId) {
 
-        return kalahGameMapper.mapToDto(loadKalah(gameId));
+        // Load Kalah
+        Kalah kalah = loadKalah(gameId);
+        KalahTo kalahTo = kalahGameMapper.mapToDto(kalah);
+        log.debug("Get Kalah is {} KalahTo is {}", kalah, kalahTo);
+
+        return kalahTo;
     }
 
     private Kalah loadKalah(String gameId) {

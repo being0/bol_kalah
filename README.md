@@ -28,12 +28,12 @@ point allows player to play the game.
 
 ### Create Game
 
+This endpoint creates a new Kalah game and returns its id and the board status.
+
 ```
 POST
 http://<host>:<port>/games
 ```
-
-This endpoint creates a new Kalah game.
 
 #### Response Body
 
@@ -70,12 +70,12 @@ This endpoint creates a new Kalah game.
 
 ### Make a move
 
+This endpoint makes a move on the kalah board by specifying gameId and pitId.
+
 ```
 PUT
 http://<host>:<port>/games/<gameId>/pits/<pitId>
 ```
-
-This endpoint makes a move on the kalah board by specifying gameId and pitId.
 
 #### Response Body
 
@@ -108,7 +108,7 @@ This endpoint makes a move on the kalah board by specifying gameId and pitId.
 | -------------             |:-----------------------------------------------:|
 | 200 (OK)                  | Success move |
 | 400 (Bad request)         | If pitId is less than 1 or larger than 14    |
-| 409 (Conflict)            | Game is finished/Move home stones/Pit is empty/Not this user turn      |
+| 409 (Conflict)            | Game is finished/Moving home stones/Pit is empty/Not the user turn      |
 | 404 (Not found)           | Game not found      |
 
 

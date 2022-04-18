@@ -121,9 +121,7 @@ public class Kalah {
         }
 
         public boolean isOnMySide(int pitId, int noOfPits) {
-            if (this == PLAYER2 && pitId > noOfPits) {
-                return true;
-            } else return this == PLAYER1 && pitId <= noOfPits;
+            return (this == PLAYER1 && pitId <= noOfPits) || (this == PLAYER2 && pitId > noOfPits);
         }
     }
 
