@@ -170,8 +170,12 @@ By growing the load we should Partition the database.
 * **Security**
 
   The APIs need Authentication. The Kalah application could be an oauth2 resource server. 
-  The user who creates the game could be the owner of the game and can set the opponent user.
-  Opponent user can receive an invitation and join the game.
+
+* **Open-closed principal**
+
+  The implementation of KalahStateEngine can use an execution context. 
+  The execution context can be created based on which player turn it is. 
+  Using this approach we can extend context when game is 4-players or 6-players and keep the algorithm unchanged.
 
 * **Shorter ID**
   
