@@ -3,7 +3,6 @@ package com.bol.kalah.service;
 import com.bol.kalah.service.exception.InvalidMoveException;
 import com.bol.kalah.service.exception.KalahFinishedException;
 import com.bol.kalah.service.exception.KalahNotFoundException;
-import com.bol.kalah.service.lock.LockProvider;
 import com.bol.kalah.service.mapper.KalahGameMapper;
 import com.bol.kalah.service.model.Kalah;
 import com.bol.kalah.service.repository.KalahRepository;
@@ -27,7 +26,6 @@ public class DefaultKalahService implements KalahService {
 
     private final KalahGameMapper kalahGameMapper;
     private final KalahRepository kalahRepository;
-    private final LockProvider lockProvider;
     private final IdGenerator idGenerator;
     private final KalahStateEngine kalahStateEngine;
     private final Clock clock;
@@ -58,17 +56,14 @@ public class DefaultKalahService implements KalahService {
         // Find the game by id
         Kalah kalah = loadKalah(gameId);
 
-        // Do the movement in a distributed lock, concurrency on the same game can produce inconsistent states
-        Kalah movedGame = lockProvider.doInLock(kalah, kg -> {
-            // Move the Kalah game
-            Kalah movedKalah = kalahStateEngine.move(kalah, pitId);
-            // Save on repository
-            return kalahRepository.save(movedKalah);
-        });
+        // Move the Kalah game
+        Kalah movedKalah = kalahStateEngine.move(kalah, pitId);
+        // Save on repository(Use Optimistic Locking to make sure the concurrent calls(like double submit) don't corrupt the game state), see Kalah.version
+        Kalah movedSavedKalah = kalahRepository.save(movedKalah);
 
         log.debug("Kalah {} moved for pitId {} final kalah is {}", gameId, pitId, kalah);
 
-        return kalahGameMapper.mapToDto(movedGame);
+        return kalahGameMapper.mapToDto(movedSavedKalah);
     }
 
     @Override

@@ -11,4 +11,8 @@ public class InvalidMoveException extends BusinessException{
     public InvalidMoveException(String message) {
         super(message, INVALID_MOVE);
     }
+
+    public InvalidMoveException(String message, BusinessErrorsEnum businessErrorsEnum) {
+        super(message, businessErrorsEnum);
+    }
 }

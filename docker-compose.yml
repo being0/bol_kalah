@@ -8,8 +8,3 @@ services:
       - MONGO_INITDB_DATABASE=kalahdb
     ports:
     - "27017-27019:27017-27019"
-  redis:
-    image: redis:alpine
-    container_name: kalah_redis
-    ports:
-      - "6379:6379"

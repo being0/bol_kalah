@@ -2,11 +2,9 @@ package com.bol.kalah.controller
 
 import com.bol.kalah.controller.error.RestExceptionHandler
 import com.bol.kalah.service.KalahService
-import com.bol.kalah.service.exception.InvalidMoveException
-import com.bol.kalah.service.exception.KalahFinishedException
-import com.bol.kalah.service.exception.KalahNotFoundException
-import com.bol.kalah.service.exception.ValidationException
+import com.bol.kalah.service.exception.*
 import com.bol.kalah.to.KalahTo
+import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
@@ -84,6 +82,21 @@ class KalahGameControllerSpec extends Specification {
                 .andExpect(jsonPath("errorCode").value(INVALID_MOVE.name()))
     }
 
+    def '"PUT /games/{gameId}/pits/{pitId}" when NotYourTurnException then expect 409'() {
+        given:
+        kalahService.move("xyz", 1) >> {
+            throw new NotYourTurnException("It is your opponent turn!")
+        }
+
+        when:
+        def response = mockMvc.perform(put("/games/{gameId}/pits/{pitId}", "xyz", 1))
+
+        then:
+        response.andExpect(status().isConflict())
+                .andExpect(jsonPath("message").value("It is your opponent turn!"))
+                .andExpect(jsonPath("errorCode").value(NOT_YOUR_TURN.name()))
+    }
+
     def '"PUT /games/{gameId}/pits/{pitId}" when ValidationException then expect 400'() {
         given:
         kalahService.move("xyz", 1) >> {
@@ -110,6 +123,21 @@ class KalahGameControllerSpec extends Specification {
 
         then:
         response.andExpect(status().isBadRequest())
+    }
+
+    def '"PUT /games/{gameId}/pits/{pitId}" when OptimisticLockingFailureException then expect 409'() {
+        given:
+        kalahService.move("xyz", 1) >> {
+            throw new OptimisticLockingFailureException("Lock failed!")
+        }
+
+        when:
+        def response = mockMvc.perform(put("/games/{gameId}/pits/{pitId}", "xyz", 1))
+
+        then:
+        response.andExpect(status().isConflict())
+                .andExpect(jsonPath("message").value("The game has been modified by another request. You may have submitted two requests in short time!"))
+                .andExpect(jsonPath("errorCode").value(CONCURRENT_UPDATE.name()))
     }
 
     def '"PUT /games/{gameId}/pits/{pitId}" when KalahFinishedException then expect 409'() {

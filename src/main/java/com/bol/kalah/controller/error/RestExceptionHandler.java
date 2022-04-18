@@ -2,6 +2,7 @@ package com.bol.kalah.controller.error;
 
 import com.bol.kalah.service.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +13,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
 import java.util.stream.Collectors;
+
+import static com.bol.kalah.service.exception.BusinessErrorsEnum.CONCURRENT_UPDATE;
+import static com.bol.kalah.service.exception.BusinessErrorsEnum.VALIDATION;
 
 @ControllerAdvice
 @Slf4j
@@ -32,7 +36,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(this::constraintViolationToString)
                 .collect(Collectors.joining(", "));
 
-        return new ResponseEntity<>(new ErrorTo(message), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorTo(message, VALIDATION), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({OptimisticLockingFailureException.class})
+    public ResponseEntity<ErrorTo> handleOptimisticLockingFailureException(OptimisticLockingFailureException e) {
+        log.error("", e);
+
+        return new ResponseEntity<>(new ErrorTo("The game has been modified by another request. " +
+                "You may have submitted two requests in short time!", CONCURRENT_UPDATE), CONCURRENT_UPDATE.getHttpStatus());
     }
 
     @ExceptionHandler({Exception.class})

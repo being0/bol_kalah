@@ -2,6 +2,7 @@ package com.bol.kalah.service
 
 import com.bol.kalah.service.exception.InvalidMoveException
 import com.bol.kalah.service.exception.KalahFinishedException
+import com.bol.kalah.service.exception.NotYourTurnException
 import com.bol.kalah.service.exception.ValidationException
 import com.bol.kalah.service.model.Kalah
 import spock.lang.Specification
@@ -97,7 +98,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
     }
 
 
-    def '"move" If not player turn then throw InvalidMoveException'() {
+    def '"move" If not player turn then throw NotYourTurnException'() {
 
         given:
         Kalah kalah = Kalah.doCreate("9529bb11-563c-47cf-b79a-912174f94d6d", 6, 4, now)
@@ -107,7 +108,7 @@ class TwoPlayersKalahStateEngineSpec extends Specification {
         kalahEngine.move(kalah, pitId as int)
 
         then:
-        thrown(InvalidMoveException)
+        thrown(NotYourTurnException)
 
         where:
         pitId | turnParam

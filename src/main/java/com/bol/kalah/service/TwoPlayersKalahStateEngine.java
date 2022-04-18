@@ -2,6 +2,7 @@ package com.bol.kalah.service;
 
 import com.bol.kalah.service.exception.InvalidMoveException;
 import com.bol.kalah.service.exception.KalahFinishedException;
+import com.bol.kalah.service.exception.NotYourTurnException;
 import com.bol.kalah.service.exception.ValidationException;
 import com.bol.kalah.service.model.Kalah;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
     private final Clock clock;
 
     /**
-     * Moves stones from the specified pit id. This method is not thread safe, should be used in a synchronized environment.
+     * Moves stones from the specified pit id.
      *
      * @param pitId pit id starting from 1
      * @return Kalah game
@@ -50,12 +51,13 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         // All checks passed, so move should be applied
         kalah.setState(RUNNING);
         int currentPitId = pitId;
+        int stones = board[pitId];
         board[pitId] = 0; // Make this pit empty
         Kalah.PlayerTurn turn = kalah.getTurn();
         int kalahIndex = turn == PLAYER1 ? kalah.getKalah1Index() : kalah.getKalah2Index();
 
         // Put stones in pits
-        for (int stones = board[pitId]; stones > 0; stones--) {
+        for (; stones > 0; stones--) {
             currentPitId = getNextPitId(kalah, currentPitId);
             // Add to the stones of next pitId
             board[currentPitId]++;
@@ -148,7 +150,7 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
 
         if (!kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits())) {
             // It is not this player turn
-            throw new InvalidMoveException("It is not your turn. Wait for your opponent to move.");
+            throw new NotYourTurnException("It is not your turn. Wait for your opponent to move.");
         }
     }
 

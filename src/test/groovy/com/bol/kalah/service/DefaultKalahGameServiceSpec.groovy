@@ -1,7 +1,6 @@
 package com.bol.kalah.service
 
 import com.bol.kalah.service.exception.KalahNotFoundException
-import com.bol.kalah.service.lock.LockProvider
 import com.bol.kalah.service.mapper.KalahGameMapper
 import com.bol.kalah.service.model.Kalah
 import com.bol.kalah.service.repository.KalahRepository
@@ -12,7 +11,6 @@ import java.time.Clock
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.function.Function
 
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER1
 import static com.bol.kalah.service.model.Kalah.PlayerTurn.PLAYER2
@@ -35,14 +33,10 @@ class DefaultKalahGameServiceSpec extends Specification {
         // Create DefaultKalahService
         KalahGameMapper kalahGameMapper = new KalahGameMapper() // a little integration is okay
         kalahRepository.save(_) >> { Kalah kalahGame -> kalahGame }
-        LockProvider lockProvider = Stub()
-        lockProvider.doInLock(_, _) >> { Kalah kalah, Function<Kalah, Kalah> kalahFunc ->
-            kalahFunc.apply(kalah)
-        }
         IdGenerator idGenerator = Stub()
         idGenerator.generateId() >> { testId }
 
-        kalahGameService = new DefaultKalahService(kalahGameMapper, kalahRepository, lockProvider, idGenerator, kalahStateEngine, clock)
+        kalahGameService = new DefaultKalahService(kalahGameMapper, kalahRepository, idGenerator, kalahStateEngine, clock)
         kalahGameService.noOfPits = 6
         kalahGameService.noOfStones = 6
     }
