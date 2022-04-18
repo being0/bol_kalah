@@ -180,7 +180,7 @@ By growing the load we should Partition the database.
 
 * **Code Quality**
 
-  I tried to add this project sonarcloud.io, but since it doesn't support Groovy, 
+  I tried to add this project to sonarcloud.io, but since it doesn't support Groovy, 
   I couldn't get code coverage there(code smell is 0 and coverage using IntelijIdea is 90%).
 
 * **Swagger**
