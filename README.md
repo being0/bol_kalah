@@ -178,4 +178,9 @@ By growing the load we should Partition the database.
   UUID used for its simplicity, but it is too large. We need to create a shorter id.
   The id generator can use unique_server_Id+timestamp+large_random_id and convert it to base32/64(or anything else)
 
+* **Code Quality**
+
+  I tried to add this project sonarcloud.io, but since it doesn't support Groovy, 
+  I couldn't get code coverage there(code smell is 0 and coverage using IntelijIdea is 90%).
+
 * **Swagger**
