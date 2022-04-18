@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * This controller provides post api on /games and put api to play with the Kalah and move the specified pit
+ * This controller provides post api on /games and put api to play with the Kalah and move to the specified pit
  *
  * @author <a href="mailto:raliakbari@gmail.com">Reza Aliakbari</a>
  * @version 1, 04/16/2022
