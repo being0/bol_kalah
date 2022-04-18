@@ -28,11 +28,12 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Using groovy spock test for its nice multiple parameter feature(much better than junit CSV model)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // Using groovy spock test for its nice multiple parameter features(much better than junit CSV model)
     testImplementation 'org.spockframework:spock-spring:2.1-groovy-3.0'
     testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
-    implementation 'org.codehaus.groovy:groovy-all:3.0.10'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.10'
 }
 
 tasks.named('test') {
@@ -45,7 +46,7 @@ jacocoTestReport {
     }
 }
 
-// Unfortunately it seems sonarcloud doesn't support groovy
+// Unfortunately it seems sonarcloud doesn't support groovy for test coverage, however you can install Groovy plugin on local installation
 sonarqube {
     properties {
         property "sonar.projectKey", "being0_bol_kalah"
