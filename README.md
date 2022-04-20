@@ -197,6 +197,14 @@ To design the app server the following components have been developed:
   For simplicity UuidIdGenerator implemented that returns UUID as uniqueId. 
   Since UUID is too large it is better to generate a smaller unique id.  
 
+* **Using Groovy/Spock for test**
+
+  Groovy/Spock provides a lot of flexibilities for testing:
+    * Being more verbose than Junit, you can write your specification on method names as it is in the documentation.
+    * Using operator overloading to simplify asserts
+    * Enforcing BDD
+    * A lot better Parameterized Testing than Junit. See TwoPlayersKalahStateEngineSpec you get my point
+
 <div id="heading-todo"/>
 
 ## TODO
