@@ -158,6 +158,43 @@ scaled, there is no bottleneck in the app servers.
 
 By growing the load we should Partition the database. 
 
+
+<div id="heading-test"/>
+
+## Components
+
+To design app server the following components have been developed:
+
+* **KalahController**
+
+  KalahController provides REST APIs on POST:/games and PUT:/games/{gameId}/pits/{pitId} and GET:/games/{gameId}
+
+* **Kalah**
+  
+  Kalah is domain model of Kalah game application.
+
+* **KalahTo and KalahGameMapper**
+
+  KalahTo is the DTO for Kalah domain and KalahGameMapper maps Kalah to KalahTo
+
+* **KalahService**
+
+  KalahService provide main logic of the application using Mongo repository and KalahStateEngine components. 
+  Moves are done by applying [**Optimistic Locking**](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) 
+  to prevent rare scenarios that concurrency or double submit can cause issues.
+
+* **KalahStateEngine**
+
+  KalahStateEngine provides the logic to move the game forward. TwoPlayersKalahStateEngine has been implemented for this purpose.
+  For less complexity the execution context has not been separated from the logic, it would overkill for two players game(so you would see logics like if(turn==PLAYER1)...), 
+  but if we want to implement four player game for example, we can extract execution context from the main game logic. 
+
+* **IdGenerator**
+
+  This component is used by KalahService to generate unique id.
+  For simplicity UuidIdGenerator implemented that returns UUID as uniqueId. 
+  Since UUID is too large it is better to generate a smaller unique id.  
+
 <div id="heading-todo"/>
 
 ## TODO
@@ -180,7 +217,9 @@ By growing the load we should Partition the database.
 * **Shorter ID**
   
   UUID used for its simplicity, but it is too large. We need to create a shorter id.
-  The id generator can use unique_server_Id+timestamp+large_random_id and convert it to base32/64(or anything else)
+  The id generator can use unique_server_Id+timestamp(from now to 100 years)+large_random_id and convert it to base32/64(or anything else)
+
+* **Keep movement history**
 
 * **Code Quality**
 
