@@ -14,6 +14,8 @@
 * [App servers](#heading-scale-1)
 * [Database](#heading-scale-2)
 
+**[Components](#heading-components)**
+
 **[TODO](#heading-todo)**
 
 
@@ -159,7 +161,7 @@ scaled, there is no bottleneck in the app servers.
 By growing the load we should Partition the database. 
 
 
-<div id="heading-test"/>
+<div id="heading-components"/>
 
 ## Components
 
