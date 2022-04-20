@@ -203,7 +203,7 @@ To design the app server the following components have been developed:
     * Being more verbose than Junit, you can write your specification on method names as it is in the documentation.
     * Using operator overloading to simplify asserts
     * Enforcing BDD
-    * A lot better Parameterized Testing than Junit. See TwoPlayersKalahStateEngineSpec you get my point
+    * Much better Parameterized Testing than Junit. See TwoPlayersKalahStateEngineSpec you get my point
 
 <div id="heading-todo"/>
 
