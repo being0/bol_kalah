@@ -24,7 +24,7 @@
 ## Solution
 
 To implement Kalah game, two REST APIs have been developed. The first end point creates the game and the second end
-point allows player to play the game.
+point allows players to move the game forward.
 
 <div id="heading-solution-1"/>
 
@@ -188,8 +188,8 @@ To design app server the following components have been developed:
 * **KalahStateEngine**
 
   KalahStateEngine provides the logic to move the game forward. TwoPlayersKalahStateEngine has been implemented for this purpose.
-  For less complexity the execution context has not been separated from the logic, it would overkill for two players game(so you would see logics like if(turn==PLAYER1)...), 
-  but if we want to implement four player game for example, we can extract execution context from the main game logic. 
+  For less complexity the execution context has not been separated from the logic, it is overkill for two players game(so you would see logics like if(turn==PLAYER1)...), 
+  but if we want to implement 4-player game, we can extract execution context from the main game logic. 
 
 * **IdGenerator**
 
