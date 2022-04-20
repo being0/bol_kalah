@@ -200,8 +200,8 @@ To design the app server the following components have been developed:
 * **Using Groovy/Spock for test**
 
   Groovy/Spock provides a lot of benefits for testing:
-    * Being more verbose than Junit, you can write your specification on method names as it is in the documentation.
-    * Using operator overloading to simplify asserts
+    * Spock code is readable and self explaining, you can write your specification on the method names as it is in the documentation. Junit also has @DisplayName but developers are lazy :D.
+    * Spock overloads operators to simplify asserts
     * Enforcing BDD
     * Much better Parameterized Testing than Junit. See TwoPlayersKalahStateEngineSpec and you get my point.
 
