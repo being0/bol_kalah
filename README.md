@@ -165,7 +165,7 @@ By growing the load we should Partition the database.
 
 ## Components
 
-To design app server the following components have been developed:
+To design the app server the following components have been developed:
 
 * **KalahController**
 
