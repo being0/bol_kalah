@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.WriteConcernResolver;
 public class MongoConfig {
     @Bean
     public WriteConcernResolver writeConcernResolver() {
+        // TODO understand the consequences of this option, would it affect availability for example?
         return action -> WriteConcern.ACKNOWLEDGED;
     }
 }
