@@ -45,10 +45,10 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         validateMove(kalah, pitIndex, context);
 
         // 2- Distribute stones(RUNNING)
-        int currentPitId = distributeStones(kalah, pitIndex, context);
+        int currentPitIdx = distributeStones(kalah, pitIndex, context);
 
         // 3- Apply last stone rule
-        applyLastStoneRule(kalah, currentPitId, context);
+        applyLastStoneRule(kalah, currentPitIdx, context);
 
         // 4- Check game over
         checkGameOver(kalah, context);
@@ -59,28 +59,28 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
     private int distributeStones(Kalah kalah, int pitIndex, Context context) {
         kalah.setState(RUNNING);
         int[] board = kalah.getBoard();
-        int currentPitId = pitIndex;
+        int currentPitIdx = pitIndex;
         int stones = board[pitIndex];
         board[pitIndex] = 0; // Make this pit empty
 
         // Put stones in pits
         for (; stones > 0; stones--) {
-            currentPitId = getNextPitId(kalah, currentPitId, context);
-            // Add to the stones of next pitId
-            board[currentPitId]++;
+            currentPitIdx = getNextPitIdx(kalah, currentPitIdx, context);
+            // Add to the stones of next pitIdx
+            board[currentPitIdx]++;
         }
 
         kalah.setModified(LocalDateTime.now(clock));
 
-        return currentPitId;
+        return currentPitIdx;
     }
 
-    private void applyLastStoneRule(Kalah kalah, int currentPitId, Context context) {
+    private void applyLastStoneRule(Kalah kalah, int currentPitIdx, Context context) {
         // The last stone
-        if (currentPitId != context.kalahIndex) {
-            if (kalah.getBoard()[currentPitId] == 1 && kalah.getTurn().isOnMySide(currentPitId, kalah.getNoOfPits())) {
+        if (currentPitIdx != context.kalahIndex) {
+            if (kalah.getBoard()[currentPitIdx] == 1 && kalah.getTurn().isOnMySide(currentPitIdx, kalah.getNoOfPits())) {
                 // The pit was empty and it is last stone and is on player side
-                applyEmptyPitFilled(kalah, currentPitId, context);
+                applyEmptyPitFilled(kalah, currentPitIdx, context);
             }
 
             // Change the turn if the stone doesn't land on the player Kalah
@@ -108,50 +108,50 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         }
     }
 
-    private void applyEmptyPitFilled(Kalah kalah, int pitId, Context context) {
+    private void applyEmptyPitFilled(Kalah kalah, int pitIdx, Context context) {
 
         // Find the mirror pit of the opponent
-        int diff = context.kalahIndex - pitId;
-        int opponentPitId = pitId > kalah.getNoOfPits() ? diff - 1 : context.kalahIndex + diff;
+        int diff = context.kalahIndex - pitIdx;
+        int opponentPitIdx = pitIdx > kalah.getNoOfPits() ? diff - 1 : context.kalahIndex + diff;
         int[] board = kalah.getBoard();
 
         // Put the pit and opponent pit stones into kalah
-        board[context.kalahIndex] += (board[pitId] + board[opponentPitId]);
-        board[pitId] = 0;
-        board[opponentPitId] = 0;
+        board[context.kalahIndex] += (board[pitIdx] + board[opponentPitIdx]);
+        board[pitIdx] = 0;
+        board[opponentPitIdx] = 0;
     }
 
-    private int getNextPitId(Kalah kalah, int pitId, Context context) {
-        pitId++;
+    private int getNextPitIdx(Kalah kalah, int pitIdx, Context context) {
+        pitIdx++;
         int[] board = kalah.getBoard();
         // rotate
-        if (pitId >= board.length) pitId = 0;
+        if (pitIdx >= board.length) pitIdx = 0;
 
-        // If pitId is in the opponent kalah then jump over it
-        if (!kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits()) &&
-                (pitId == context.opponent.kalahIndex)) {
-            pitId++;
-            if (pitId >= board.length) pitId = 0;
+        // If pitIdx is in the opponent kalah then jump over it
+        if (!kalah.getTurn().isOnMySide(pitIdx, kalah.getNoOfPits()) &&
+                (pitIdx == context.opponent.kalahIndex)) {
+            pitIdx++;
+            if (pitIdx >= board.length) pitIdx = 0;
         }
 
-        return pitId;
+        return pitIdx;
     }
 
-    private void validateMove(Kalah kalah, int pitId, Context context) throws InvalidMoveException {
+    private void validateMove(Kalah kalah, int pitIdx, Context context) throws InvalidMoveException {
         // If game is over then throw exception
         if (kalah.getState() == FINISHED) throw new KalahFinishedException("Kalah game has been finished!");
 
-        // Validate pitId
-        if (pitId < 0 || pitId > 2 * kalah.getNoOfPits() + 1)
+        // Validate pitIdx
+        if (pitIdx < 0 || pitIdx > 2 * kalah.getNoOfPits() + 1)
             throw new ValidationException("Pit Id should be a positive number under " + kalah.getNoOfPits() + 2 * kalah.getNoOfPits() + 1);
 
-        if (pitId == context.kalahIndex)
+        if (pitIdx == context.kalahIndex)
             throw new InvalidMoveException("Stones in kalah can not be moved.");
 
         // Pit should not be empty
-        if (kalah.getBoard()[pitId] == 0) throw new InvalidMoveException("The pit is empty!");
+        if (kalah.getBoard()[pitIdx] == 0) throw new InvalidMoveException("The pit is empty!");
 
-        if (kalah.getTurn() != null && !kalah.getTurn().isOnMySide(pitId, kalah.getNoOfPits())) {
+        if (kalah.getTurn() != null && !kalah.getTurn().isOnMySide(pitIdx, kalah.getNoOfPits())) {
             // It is not this player turn
             throw new NotYourTurnException("It is not your turn. Wait for your opponent to move.");
         }
@@ -164,8 +164,8 @@ public class TwoPlayersKalahStateEngine implements KalahStateEngine {
         Integer startIndex;
         private Context opponent;
 
-        private static Context create(int pitId, int noOfPits) {
-            if (pitId < noOfPits) {
+        private static Context create(int pitIdx, int noOfPits) {
+            if (pitIdx < noOfPits) {
                 // Player1 context
                 return new Context(PLAYER1, Kalah.calKalah1Index(noOfPits), 0,
                         new Context(PLAYER2, Kalah.calKalah2Index(noOfPits), noOfPits + 1, null));
