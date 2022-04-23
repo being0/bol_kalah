@@ -1,12 +1,13 @@
 package com.bol.kalah.service.model;
 
 import com.bol.kalah.service.exception.ValidationException;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -26,11 +27,16 @@ public class Kalah {
 
     @Id
     private String id;
+
     @Version
+    @Setter(AccessLevel.NONE)
     private Long version;
+
     private GameState state;
+
     @CreatedDate
     private LocalDateTime created;
+
     @LastModifiedDate
     private LocalDateTime modified;
     /**
@@ -44,27 +50,10 @@ public class Kalah {
 
     private PlayerTurn turn;
 
-    @Transient
-    private int kalah1Index;
-    @Transient
-    private int kalah2Index;
     /**
      * Board model
      */
     private int[] board;
-
-    public void initKalahIndexes() {
-        kalah1Index = kalah1Index(noOfPits);
-        kalah2Index = kalah2Index(noOfPits);
-    }
-
-    private static int kalah1Index(Integer noOfPits) {
-        return noOfPits;
-    }
-
-    private static int kalah2Index(Integer noOfPits) {
-        return noOfPits * 2 + 1;
-    }
 
     public Kalah(String id, GameState state, LocalDateTime created,
                  Integer noOfPits, Integer noOfStones, PlayerTurn turn, int[] board) {
@@ -76,8 +65,6 @@ public class Kalah {
         this.noOfPits = noOfPits;
         this.turn = turn;
         this.board = board;
-        // Init kalah indexes
-        initKalahIndexes();
     }
 
     /**
@@ -95,12 +82,19 @@ public class Kalah {
         // Setup board with pits equal to numberOfStones and Kalahs with 0, no of pits will noOfPits * 2 + 2 kalahs
         int[] board = new int[noOfPits * 2 + 2];
         Arrays.fill(board, noOfStones);
-        board[kalah1Index(noOfPits)] = 0;
-        board[kalah2Index(noOfPits)] = 0;
+        board[calKalah1Index(noOfPits)] = 0;
+        board[calKalah2Index(noOfPits)] = 0;
 
         return new Kalah(id, GameState.CREATED, now, noOfPits, noOfStones, null, board);
     }
 
+    public static int calKalah1Index(Integer noOfPits) {
+        return noOfPits;
+    }
+
+    public static int calKalah2Index(Integer noOfPits) {
+        return noOfPits * 2 + 1;
+    }
 
     /**
      * Game status could be created, running or finished

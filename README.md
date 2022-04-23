@@ -188,9 +188,7 @@ To design the app server the following components have been developed:
 * **KalahStateEngine**
 
   KalahStateEngine provides the logic to move the game forward. TwoPlayersKalahStateEngine has been implemented for this purpose.
-  For less complexity the execution context has not been separated from the logic, it is overkill for two players game(so you would see logics like if(turn==PLAYER1)...), 
-  but if we want to implement 4-player game, we can extract execution context from the main game logic. 
-
+ 
 * **IdGenerator**
 
   This component is used by KalahService to generate unique id.
@@ -217,12 +215,6 @@ To design the app server the following components have been developed:
 * **Security**
 
   The APIs need Authentication. The Kalah application could be an oauth2 resource server. 
-
-* **Open-closed principal**
-
-  The implementation of KalahStateEngine can use an execution context. 
-  The execution context can be created based on which player turn it is. 
-  Using this approach we can extend context when game is 4-players or 6-players and keep the algorithm unchanged.
 
 * **Shorter ID**
   
